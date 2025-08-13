@@ -110,6 +110,7 @@ export default function App() {
       if (config.audioEnabled) setupAudio(stream)
     } catch (e: any) {
       setError('Camera/mic permission denied or unavailable. Ensure HTTPS and allow access.')
+      console.error(e)
       throw e
     }
   }
