@@ -82,9 +82,12 @@ export default function App() {
       await tf.setBackend('webgl')
       await tf.ready()
       const model = await face.createDetector(face.SupportedModels.MediaPipeFaceMesh, {
-        runtime: 'mediapipe',
-        // maxFaces: 1,
-        refineLandmarks: true, // enables iris landmarks
+        runtime: 'tfjs',
+        maxFaces: 1,
+        refineLandmarks: true,
+        detectorModelUrl: 'https://tfhub.dev/mediapipe/tfjs-model/face_detection/short/1',
+        landmarkModelUrl:
+          'https://tfhub.dev/mediapipe/tfjs-model/face_landmarks_detection/attention_mesh/1',
       })
       modelRef.current = model
       return model
@@ -269,11 +272,9 @@ export default function App() {
 
       let smiling = false
       try {
-        const faces = await model.estimateFaces({
-          input: video,
-          returnTensors: false,
+        const faces = await model.estimateFaces(video, {
           flipHorizontal: config.flipHorizontal,
-          predictIrises: true,
+          staticImageMode: false,
         })
         if (faces && faces[0]) {
           const f = faces[0]
