@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
+import * as face from '@tensorflow-models/face-landmarks-detection'
 
 export default function App() {
   const [screen, setScreen] = useState<'home' | 'active' | 'disqualified' | 'success'>('home')
@@ -82,9 +83,10 @@ export default function App() {
       // @ts-ignore
       await tf.setBackend('webgl')
       await tf.ready()
-      const model = await face.load(face.SupportedPackages.mediapipeFacemesh, {
+      const model = await face.createDetector(face.SupportedModels.MediaPipeFaceMesh, {
+        runtime: 'mediapipe',
         maxFaces: 1,
-        shouldLoadIrisModel: true,
+        refineLandmarks: true, // enables iris landmarks
       })
       modelRef.current = model
       return model
@@ -355,7 +357,7 @@ export default function App() {
               key={m}
               onClick={() => setDuration(m * 60)}
               className={`rounded-xl border px-4 py-3 text-left hover:shadow transition ${
-                duration === m * 60 ? 'border-palace.purple' : 'border-gray-300'
+                duration === m * 60 ? 'bg-black text-white' : 'border-gray-300'
               }`}
             >
               <div className="text-lg font-semibold">{m} minutes</div>
@@ -431,7 +433,7 @@ export default function App() {
 
         <button
           onClick={startChallenge}
-          className="w-full md:w-auto rounded-2xl px-6 py-3 bg-palace.purple text-white font-semibold shadow-palace hover:opacity-95"
+          className="w-full md:w-auto rounded-2xl px-6 py-3 bg-black text-white font-semibold shadow-palace hover:opacity-95"
         >
           Start Challenge
         </button>
