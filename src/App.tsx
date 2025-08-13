@@ -1,5 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import * as face from '@tensorflow-models/face-landmarks-detection'
+import * as tf from '@tensorflow/tfjs-core'
+import '@tensorflow/tfjs-converter'
+import '@tensorflow/tfjs-backend-webgl'
 
 export default function App() {
   const [screen, setScreen] = useState<'home' | 'active' | 'disqualified' | 'success'>('home')
@@ -76,16 +79,11 @@ export default function App() {
     if (modelRef.current) return modelRef.current
     setError(null)
     try {
-      const tf = await import('@tensorflow/tfjs-core')
-      await import('@tensorflow/tfjs-converter')
-      await import('@tensorflow/tfjs-backend-webgl')
-      const face = await import('@tensorflow-models/face-landmarks-detection')
-      // @ts-ignore
       await tf.setBackend('webgl')
       await tf.ready()
       const model = await face.createDetector(face.SupportedModels.MediaPipeFaceMesh, {
         runtime: 'mediapipe',
-        maxFaces: 1,
+        // maxFaces: 1,
         refineLandmarks: true, // enables iris landmarks
       })
       modelRef.current = model

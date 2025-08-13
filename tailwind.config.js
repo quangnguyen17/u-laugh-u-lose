@@ -8,11 +8,11 @@ export default {
           purple: '#6D28D9',
           gold: '#F59E0B',
           ink: '#111827',
-          fog: '#F9FAFB'
-        }
+          fog: '#F9FAFB',
+        },
       },
-      boxShadow: { 'palace': '0 10px 25px rgba(109,40,217,0.25)' },
-      borderRadius: { 'palace': '1.25rem' }
+      boxShadow: { palace: '0 10px 25px rgba(109,40,217,0.25)' },
+      borderRadius: { palace: '1.25rem' },
     },
   },
   plugins: [],
